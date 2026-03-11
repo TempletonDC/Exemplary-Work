@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Work Gallery — Templeton Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #f5b6e9;
+    --cyan: #78e1e8;
+    --coral: #f55657;
+    --blue: #455be2;
+    --yellow: #ffbb22;
+    --teal: #018e75;
+    --peach: #edaf84;
+    --purple: #822f91;
+    --blush: #eadbde;
+    --dark: #262626;
+    --lime: #c9f414;
+    --sage: #b2d28a;
+    --magenta: #db3198;
+    --deep-purple: #574675;
+    --wine: #7a0e5b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .bg-deco { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .bg-deco img { position: absolute; opacity: 0.08; }
+  .bg-deco .q1 { top: -60px; left: -40px; width: 320px; transform: rotate(-15deg); }
+  .bg-deco .q2 { top: 30%; right: -80px; width: 260px; transform: rotate(25deg); }
+  .bg-deco .q3 { bottom: 10%; left: 5%; width: 200px; transform: rotate(-30deg); }
+  .bg-deco .q4 { bottom: -40px; right: 20%; width: 280px; transform: rotate(10deg); }
+
+  header {
+    position: relative; z-index: 2;
+    padding: 48px 40px 32px;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+  }
+  .wordmark { width: 320px; max-width: 80vw; margin-bottom: 16px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.3)); }
+  header .tagline {
+    font-size: 0.85rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 40px; font-weight: 500;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif; font-weight: 900;
+    font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1.1; margin-bottom: 12px;
+  }
+  header h1 .accent-coral { color: var(--coral); }
+  header h1 .accent-yellow { color: var(--yellow); }
+  header p.subtitle {
+    font-size: 1.1rem; color: var(--blush); max-width: 540px; line-height: 1.6; font-weight: 300;
+  }
+
+  .color-bar {
+    display: flex; height: 6px; width: 100%; max-width: 700px;
+    margin: 32px auto 0; border-radius: 3px; overflow: hidden;
+  }
+  .color-bar span { flex: 1; }
+
+  .gallery {
+    position: relative; z-index: 2; max-width: 1200px; margin: 0 auto;
+    padding: 56px 32px 80px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 28px;
+  }
+
+  .card {
+    position: relative; border-radius: 20px; overflow: hidden;
+    transition: transform 0.35s cubic-bezier(.22,.68,0,1.2), box-shadow 0.35s ease;
+    cursor: pointer; text-decoration: none; color: #fff;
+    display: flex; flex-direction: column;
+  }
+  .card:hover { transform: translateY(-8px) scale(1.015); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+
+  .card-top {
+    position: relative; padding: 36px 32px 28px; min-height: 200px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .card-label {
+    display: inline-block; font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 100px; margin-bottom: 14px; width: fit-content;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif; font-weight: 900;
+    font-size: 1.5rem; line-height: 1.2; margin-bottom: 4px;
+  }
+  .card-course { font-size: 0.85rem; font-weight: 500; opacity: 0.85; margin-top: 4px; }
+
+  .card-bottom {
+    padding: 20px 32px 24px; background: rgba(0,0,0,0.25);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-grow: 1;
+  }
+  .card-students { font-size: 0.9rem; font-weight: 500; }
+  .card-students span {
+    display: block; font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.08em; opacity: 0.6; margin-bottom: 2px; font-weight: 700;
+  }
+
+  .card-arrow {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: background 0.25s;
+  }
+  .card:hover .card-arrow { background: rgba(255,255,255,0.3); }
+  .card-arrow svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  .card-dot { position: absolute; border-radius: 50%; opacity: 0.35; }
+
+  .card--teal .card-top { background: linear-gradient(135deg, var(--teal), #016a58); }
+  .card--teal .card-label { background: var(--cyan); color: var(--dark); }
+  .card--teal .card-dot { background: var(--lime); }
+
+  .card--blue .card-top { background: linear-gradient(135deg, var(--blue), #3344b8); }
+  .card--blue .card-label { background: var(--yellow); color: var(--dark); }
+  .card--blue .card-dot { background: var(--pink); }
+
+  .card--purple .card-top { background: linear-gradient(135deg, var(--purple), #5e1b6b); }
+  .card--purple .card-label { background: var(--lime); color: var(--dark); }
+  .card--purple .card-dot { background: var(--cyan); }
+
+  .card--coral .card-top { background: linear-gradient(135deg, var(--coral), #c73e3f); }
+  .card--coral .card-label { background: var(--pink); color: var(--dark); }
+  .card--coral .card-dot { background: var(--yellow); }
+
+  .card--yellow .card-top { background: linear-gradient(135deg, var(--yellow), #e0a010); }
+  .card--yellow .card-label { background: var(--teal); color: #fff; }
+  .card--yellow .card-dot { background: var(--blue); }
+  .card--yellow .card-title, .card--yellow .card-course, .card--yellow .card-students { color: var(--dark); }
+  .card--yellow .card-bottom { background: rgba(0,0,0,0.12); }
+  .card--yellow .card-students span { color: var(--dark); }
+
+  .card--featured { grid-column: 1 / -1; }
+  .card--featured .card-top { min-height: 240px; padding: 44px 40px 32px; }
+  .card--featured .card-title { font-size: 2rem; }
+
+  footer {
+    position: relative; z-index: 2; text-align: center;
+    padding: 20px 32px 48px; color: var(--blush);
+    font-size: 0.82rem; opacity: 0.6; letter-spacing: 0.05em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card { animation: fadeUp 0.6s ease both; }
+  .card:nth-child(1) { animation-delay: 0.1s; }
+  .card:nth-child(2) { animation-delay: 0.2s; }
+  .card:nth-child(3) { animation-delay: 0.3s; }
+  .card:nth-child(4) { animation-delay: 0.4s; }
+  .card:nth-child(5) { animation-delay: 0.5s; }
+  header { animation: fadeUp 0.5s ease both; }
+
+  @media (max-width: 720px) {
+    header { padding: 36px 20px 24px; }
+    .gallery { padding: 36px 16px 56px; gap: 20px; grid-template-columns: 1fr; }
+    .card--featured { grid-column: auto; }
+    .card--featured .card-top { min-height: 180px; padding: 32px 24px 24px; }
+    .card--featured .card-title { font-size: 1.5rem; }
+    .card-top { padding: 28px 24px 20px; min-height: 160px; }
+    .card-bottom { padding: 16px 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-deco">
+  <img class="q1" src="Templeton_tmark_rgb_yellow_trans.png" alt="">
+  <img class="q2" src="Templeton_tmark_rgb_yellow_trans.png" alt="">
+  <img class="q3" src="Templeton_tmark_rgb_yellow_trans.png" alt="">
+  <img class="q4" src="Templeton_tmark_rgb_yellow_trans.png" alt="">
+</div>
+
+<header>
+  <img src="Templeton_wordmark_rgb_white.png" alt="Templeton Academy" class="wordmark">
+  <p class="tagline">Never Stop Being Curious</p>
+  <h1><span class="accent-coral">Exemplary</span> Student <span class="accent-yellow">Work</span></h1>
+  <p class="subtitle">Showcasing the creativity, critical thinking, and real-world problem solving of our students through project-based learning.</p>
+  <div class="color-bar">
+    <span style="background:var(--teal)"></span>
+    <span style="background:var(--coral)"></span>
+    <span style="background:var(--blue)"></span>
+    <span style="background:var(--yellow)"></span>
+    <span style="background:var(--purple)"></span>
+    <span style="background:var(--pink)"></span>
+    <span style="background:var(--cyan)"></span>
+    <span style="background:var(--peach)"></span>
+    <span style="background:var(--lime)"></span>
+  </div>
+</header>
+
+<section class="gallery">
+
+  <a href="https://docs.google.com/document/d/18My8Lkp6_fR0rqlBEgkvMKC2sZ3YWMuf1lif8-1jwFU/edit" target="_blank" rel="noopener" class="card card--teal card--featured">
+    <div class="card-top">
+      <div class="card-dot" style="width:80px;height:80px;top:20px;right:30px;"></div>
+      <div class="card-dot" style="width:24px;height:24px;top:60px;right:120px;opacity:0.25;"></div>
+      <span class="card-label">Senior Capstone</span>
+      <div class="card-title">The Matcha Boom</div>
+      <div class="card-course">Capstone Project</div>
+    </div>
+    <div class="card-bottom">
+      <div class="card-students"><span>Student</span>Catie Guire</div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    </div>
+  </a>
+
+  <a href="https://docs.google.com/document/d/1fVw8AgE6jiKcp35VBhUe5VRFkYc8QXq0/edit" target="_blank" rel="noopener" class="card card--purple">
+    <div class="card-top">
+      <div class="card-dot" style="width:60px;height:60px;top:16px;right:24px;"></div>
+      <div class="card-dot" style="width:18px;height:18px;bottom:30px;right:90px;opacity:0.2;"></div>
+      <span class="card-label">Senior Capstone</span>
+      <div class="card-title">Fantasy Cookbook</div>
+      <div class="card-course">Capstone Project</div>
+    </div>
+    <div class="card-bottom">
+      <div class="card-students"><span>Student</span>Catalina Otero</div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    </div>
+  </a>
+
+  <a href="https://www.canva.com/design/DAGjTf3YAm8/YAR4ykynFJuHE2U0c-jkJQ/view?utm_content=DAGjTf3YAm8&utm_campaign=designshare&utm_medium=link&utm_source=viewer" target="_blank" rel="noopener" class="card card--blue">
+    <div class="card-top">
+      <div class="card-dot" style="width:56px;height:56px;top:18px;right:28px;"></div>
+      <div class="card-dot" style="width:20px;height:20px;top:70px;right:100px;opacity:0.2;"></div>
+      <span class="card-label">Algebra 2</span>
+      <div class="card-title">A Year Away</div>
+      <div class="card-course">Algebra 2 Project</div>
+    </div>
+    <div class="card-bottom">
+      <div class="card-students"><span>Students</span>Liam Rangel O'Donoghue &amp; Mira Vaidya</div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    </div>
+  </a>
+
+  <a href="https://www.canva.com/design/DAGBZxwIlao/Uj5z8X7Kwvk_UAOid4tdUg/edit?utm_content=DAGBZxwIlao&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" target="_blank" rel="noopener" class="card card--coral">
+    <div class="card-top">
+      <div class="card-dot" style="width:64px;height:64px;top:14px;right:20px;"></div>
+      <div class="card-dot" style="width:16px;height:16px;bottom:24px;left:30px;opacity:0.25;"></div>
+      <span class="card-label">Consumer Math</span>
+      <div class="card-title">Budget Plan Presentation</div>
+      <div class="card-course">Consumer Math Project</div>
+    </div>
+    <div class="card-bottom">
+      <div class="card-students"><span>Student</span>Koren Brooks</div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    </div>
+  </a>
+
+  <a href="https://docs.google.com/document/d/1JQ0EfByIUg_PbWILHe_6R7SGBf1JIZsYud8UMUfBURQ/edit" target="_blank" rel="noopener" class="card card--yellow">
+    <div class="card-top">
+      <div class="card-dot" style="width:72px;height:72px;top:12px;right:24px;"></div>
+      <div class="card-dot" style="width:22px;height:22px;top:80px;right:110px;opacity:0.2;"></div>
+      <span class="card-label">Advanced Biology</span>
+      <div class="card-title">Habitat Corridor Proposal</div>
+      <div class="card-course">Advanced Biology Project</div>
+    </div>
+    <div class="card-bottom">
+      <div class="card-students"><span>Students</span>Chris Williams &amp; Wilton Lash</div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    </div>
+  </a>
+
+</section>
+
+<footer>Templeton Academy &mdash; Nashville, TN &mdash; templetonacademy.org</footer>
+
+</body>
+</html>
